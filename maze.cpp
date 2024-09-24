@@ -23,10 +23,10 @@ int main()
 	cin >> WidthMaze;
 	
 	//все возможные символы и их число
-	/*for (size_t i = 0; i < 255; i++)
+	for (size_t i = 0; i < 255; i++)
 	{
 		cout << "number = " << i << "symbol = " << (char)i << endl;
-	}*/
+	}
 
 	//стена = 219
 	int const wall = 219; //"█"
@@ -41,7 +41,7 @@ int main()
 	cout << LongArray << endl;
 	//создание массива символов (неизвестного размера при начале компиляции)
 	char* MazeSpace = new char[LongArray];
-	//рисование границы
+	//создание границы
 	for (int a = 0; a < LongMaze + 2; a++)
 	{
 		for (int b = 0; b < WidthMaze + 2; b++)
@@ -60,7 +60,7 @@ int main()
 	//зависимость случайного числа от времени
 	srand(time(NULL));
 
-	//создание случайных точек 
+	//создание случайных точек
 	
 	// старт  
 	int RandomStart = rand();
@@ -76,10 +76,17 @@ int main()
 
 	//моя позиция
 	int MyPosition = RandomStart;
-	//моя предыдущая позиция
-	int MyPrePosition = MyPosition;
+
+	//создание массива чисел (неизвестного размера при начале компиляции)
+	
+	// массив путей
+	int* MazePaths = new int[LongArray] {};
+
+	//возможные пути
+	bool up = false; bool left = false; bool down = false; bool right = false;
+
 	//наличие пустоты в пространстве лабиринта
-	/*bool PresenceZero = true;
+	bool PresenceZero = true;
 	while (PresenceZero)
 	{
 		PresenceZero = false;
@@ -93,15 +100,10 @@ int main()
 		}
 		//количество возможных путей
 		int chance = 0;
-		//возможные пути
-		bool up = false;
-		bool left = false;
-		bool down = false;
-		bool right = false;
+
 		if (PresenceZero)
 		{
 			//возможные ходы
-
 			if (MazeSpace[MyPosition - (WidthMaze + 2)] == (char)zero)
 			{
 				up = true;
@@ -123,29 +125,72 @@ int main()
 				chance += 1;
 			}
 		}
-////////////////////////////////////////////////////////////////////////////////////////////////////конец работы на сегодня
+		// направления в которые можно попасть из этой клетки
+		//1=(upv=false)    2=(upv=true)
+		//3=(downv=false)  4=(downv=true)
+		//5=(leftv=false)  6=(leftv=true)
+		//7=(rightv=false) 8=(rightv=true)
+		bool upv = false; bool leftv = false; bool downv = false; bool rightv = false;
+		
+		if (MazePaths[MyPosition]==0)
+		{
+			MazePaths[MyPosition] = 1357;
+		}
+		if (MazePaths[MyPosition]%10 == 7)
+		{
+			rightv = false;
+		}
+		else
+		{
+			rightv = true;
+		}
+		if ((MazePaths[MyPosition]/10)%10 == 5)
+		{
+			leftv = false;
+		}
+		else
+		{
+			leftv = true;
+		}
+		if ((MazePaths[MyPosition] / 100) % 10 == 3)
+		{
+			downv = false;
+		}
+		else
+		{
+			downv = true;
+		}
+		if ((MazePaths[MyPosition] / 1000) % 10 == 1)
+		{
+			upv = false;
+		}
+		else
+		{
+			upv = true;
+		}
+		///////////////////////////////////конец
 		if (chance==0 and PresenceZero)
 		{
 			//удаление последнего символа в "CreateMaze"
-			MyPosition = CreateMaze
 		}
 		else if (chance==1)
 		{
+			//вместо MyPosition(*) сделать true в ту стороно в которой будет ход
 			//сдвинуть свою позицию в направлении "(char)zero"
-			//и вместо MyPosition(*) проложить дорогу от предыдущей своей позиции к настоящей
-			if (up)
+			//поставить true в другую сторону
+			if (upv)
 			{
 				MyPosition -= (WidthMaze + 2);
 			}
-			else if (down)
+			else if (downv)
 			{
 				MyPosition += (WidthMaze + 2);
 			}
-			else if (left)
+			else if (leftv)
 			{
 				MyPosition -= 1;
 			}
-			else
+			else if (rightv)
 			{
 				MyPosition += 1;
 			}
@@ -164,7 +209,8 @@ int main()
 			cout << "error 'chanse = 4'";
 			return 4;
 		}
-	}*/
+	}
+
 	//отображение в консоль
 	bool MazeOut = true;
 	while(MazeOut)
